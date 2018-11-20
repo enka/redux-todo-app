@@ -27,7 +27,25 @@
       initialState,
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
-    
+
+    const $form = document.getElementById('form');
+    $form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData($form);
+      
+      const action = {
+        type: 'ADD_TASK',
+        payload: {
+          id: 3,
+          text: data.get('text'),
+          completed: false
+        }
+      };
+
+      store.dispatch(action);
+      const $input = document.getElementById('new-todo');
+      $input.value = '';
+    });
     //renderTodos(initialState);
   }
 

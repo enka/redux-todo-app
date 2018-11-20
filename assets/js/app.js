@@ -54,7 +54,17 @@
             const $input = document.getElementById('new-todo');
             $input.value = '';
         });
-        //renderTodos(initialState);
+        store.subscribe(handleChange);
+        render();
+    }
+
+    function handleChange() {
+      render();
+    }
+
+    function render() {
+      const todos = store.getState();
+      renderTodos(todos);
     }
 
     function renderTodos(todos) {

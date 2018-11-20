@@ -1,5 +1,9 @@
 (function() {
 
+  const { createStore } = Redux;
+
+  let store;
+
   const initialState = [
     {
       id: 1,
@@ -18,7 +22,13 @@
   });
 
   function initApp() {
-    renderTodos(initialState);
+    store = createStore(
+      (state) => state,
+      initialState,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+    
+    //renderTodos(initialState);
   }
 
   function renderTodos(todos){

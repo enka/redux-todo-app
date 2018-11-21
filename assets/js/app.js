@@ -14,8 +14,15 @@
             case 'ADD_TASK':
                 return [...state, action.payload];
             case 'DELETE_TASK':
-                return state.filter(function (element) {
-                    return element.id !== action.payload.id
+                return state.filter(function(element) {
+                    return element.id !== action.payload.id;
+                });
+            case 'TOGGLE_TASK':
+                return state.map(function(element) {
+                    if (element.id === action.payload.id){
+                        element.completed = !element.completed 
+                    } 
+                    return element;
                 });
             default:
                 return state;
@@ -39,6 +46,7 @@
         render();
 
         this.deleteTask = deleteTask.bind(this);
+        this.toggleTask = toggleTask.bind(this);
     }
 
     function addTask(data) {
@@ -71,6 +79,16 @@
         store.dispatch(action);
     }
 
+    function toggleTask(id) {
+        const action = {
+            type: 'TOGGLE_TASK',
+            payload: {
+                id: id
+            }
+        };
+        store.dispatch(action);
+    }
+
     function handleChange() {
         render();
     }
@@ -95,7 +113,7 @@
         return `
     <li data-id="${todo.id}" class="${todo.completed}">
       <div class="view">
-        <input class="toggle" type="checkbox" ${todo.completed ? 'checked' : ''}>
+        <input class="toggle" type="checkbox" onClick="toggleTask(${todo.id})" ${todo.completed ? 'checked' : ''}>
         <label>${todo.text}</label>
         <button class="destroy" onClick="deleteTask(${todo.id})"></button>
       </div>

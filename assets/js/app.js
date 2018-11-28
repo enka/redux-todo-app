@@ -90,7 +90,7 @@
     }
     
     function addTask(data) {
-        const newId = store.getState().length;
+        const newId = getNewId(store.getState());
         const action = {
             type: 'ADD_TASK',
             payload: {
@@ -102,6 +102,10 @@
 
         store.dispatch(action);
         clearInput();
+    }
+
+    function getNewId(list){
+        return list.length ? list[list.length-1].id + 1 : 0;
     }
 
     function clearInput() {

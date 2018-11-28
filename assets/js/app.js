@@ -24,6 +24,10 @@
                     }
                     return element;
                 });
+            case 'CLEAR_COMPLETED':
+                return state.filter(function(element) {
+                    return !element.completed;
+                });
             default:
                 return state;
         }
@@ -50,6 +54,7 @@
         addFormEventListener();
         addFilterEventListener();
         hashChangeEventListener();
+        addClearCompletedEventListener();
     }
 
     function addFormEventListener(){
@@ -69,6 +74,13 @@
                 this.className += 'selected';
             });
         }
+    }
+
+    function addClearCompletedEventListener(){
+        const $button = document.getElementById('clear-completed');
+        $button.addEventListener('click', event => {
+            clearCompleted();
+        });
     }
 
     function hashChangeEventListener(){
@@ -113,6 +125,13 @@
             payload: {
                 id: id
             }
+        };
+        store.dispatch(action);
+    }
+
+    function clearCompleted(){
+        const action = {
+            type: 'CLEAR_COMPLETED',
         };
         store.dispatch(action);
     }

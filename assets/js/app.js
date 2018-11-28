@@ -24,6 +24,10 @@
                     }
                     return element;
                 });
+            case 'CLEAR_COMPLETED':
+                return state.filter(function(element) {
+                    return !element.completed;
+                });
             default:
                 return state;
         }
@@ -50,6 +54,7 @@
         addFormEventListener();
         addFilterEventListener();
         hashChangeEventListener();
+        addClearCompletedEventListener();
     }
 
     function addFormEventListener(){
@@ -71,6 +76,13 @@
         }
     }
 
+    function addClearCompletedEventListener(){
+        const $button = document.getElementById('clear-completed');
+        $button.addEventListener('click', event => {
+            clearCompleted();
+        });
+    }
+
     function hashChangeEventListener(){
         window.onhashchange = function() {
             render();
@@ -78,7 +90,7 @@
     }
     
     function addTask(data) {
-        const newId = store.getState().length;
+        const newId = getNewId(store.getState());
         const action = {
             type: 'ADD_TASK',
             payload: {
@@ -90,6 +102,10 @@
 
         store.dispatch(action);
         clearInput();
+    }
+
+    function getNewId(list){
+        return list.length ? list[list.length-1].id + 1 : 0;
     }
 
     function clearInput() {
@@ -113,6 +129,13 @@
             payload: {
                 id: id
             }
+        };
+        store.dispatch(action);
+    }
+
+    function clearCompleted(){
+        const action = {
+            type: 'CLEAR_COMPLETED',
         };
         store.dispatch(action);
     }
